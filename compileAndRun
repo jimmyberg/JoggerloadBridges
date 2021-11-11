@@ -1,0 +1,4 @@
+clear
+make -j && echo "
+Program output:
+" && ./prog
