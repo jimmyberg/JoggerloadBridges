@@ -11,7 +11,7 @@
  *
  *   O
  *  / \
- *   |                   pretty bridge
+ *   |                  'pretty bridge'
  *  / \ -->    ----------------------------------
  *  velocity   -  -  -  -  -  -  -  -  -  -  -  -
  *             ----------------------------------
@@ -29,7 +29,7 @@
  * It is meant to compliment the jogger load case described by the HIVOSS and EN 1991-2.
  * This simple model accounts for
  *
- * @author     Jimmy van den Berg
+ * @author     Jimmy van den Berg - Flow Engineering - The Netherlands
  * @date       2021
  */
 
@@ -40,6 +40,8 @@
 
 using namespace std;
 
+
+// Handy powers of 2 and 3
 double power2(double x){return x*x;}
 double power3(double x){return x*x*x;}
 
@@ -72,7 +74,10 @@ double y(double t, double a, double T){
 }
 
 /**
- * @brief      Apply newtons method on the first derivative to find local maxima
+ * @brief      Find t where local maxima is for double y(double t, double a,
+ *             double T)
+ *
+ *             Apply newtons method on the first derivative to find local maxima
  *
  * @return     time t of local maxima
  */
@@ -111,6 +116,17 @@ void processArg(const char* arg){
 	}
 }
 
+double joggerLoadFactor(double f){
+	if(f <= 1.9 || f >= 3.5)
+		return 0;
+	else if(f < 2.2)
+		return (f-1.9)*(2.2-1.9);
+	else if (f <= 2.7)
+		return 1;
+	else
+		return -(f-3.5)*(3.5-2.7);;
+}
+
 int main(int argc, char** argv){
 	double L = 10;
 	double v = 3;
@@ -121,6 +137,11 @@ int main(int argc, char** argv){
 		processArg(argv[index]);
 	}
 
+	cout << "Resonance frequency at span [Hz] = " << flush;
+	cin >> f;
+	const float F = joggerLoadFactor(f)*1250;
+	cout << '\n';
+	cout << "Jogger load [N]                  = " << joggerLoadFactor(f)*1250 << "  per jogger.\n\n";
 	cout << "Length of span [m]               = " << flush;
 	cin >> L;
 	if(overrideVelocity){
@@ -130,8 +151,6 @@ int main(int argc, char** argv){
 	else{
 		cout << "Assumed velocity jogger [m/s]    = " << v << "\n";
 	}
-	cout << "Resonance frequency at span [Hz] = " << flush;
-	cin >> f;
 	cout << "Damping of bridge [-]            = " << flush;
 	cin >> z;
 	cout << '\n';
@@ -153,12 +172,12 @@ int main(int argc, char** argv){
 	float y_max_ratio = y(t, a, T);
 	cout << "y_max                            = " << y_max_ratio*100 << " % of maximum.\n\n";
 
-	cout << "Generalized mass                 = " << flush;
+	cout << "Generalized mass [kg]            = " << flush;
 
 	float m;
 	cin >> m;
 
-	cout << "Maximal acceleration will be " << y_max_ratio*1250/(2*m*z) << " [m/s^2] per jogger.\n";
+	cout << "Maximal acceleration [m/s^2]     = " << y_max_ratio*1250*joggerLoadFactor(f)/(2*m*z) << " per jogger.\n";
 
 	return 0;
 }
