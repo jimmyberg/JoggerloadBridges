@@ -40,6 +40,8 @@
 
 using namespace std;
 
+static constexpr float joggerFreqLoc[4] = {1.9,2.2,2.7,3.5};
+
 
 // Handy powers of 2 and 3
 double power2(double x){return x*x;}
@@ -117,14 +119,14 @@ void processArg(const char* arg){
 }
 
 double joggerLoadFactor(double f){
-	if(f <= 1.9 || f >= 3.5)
+	if(f <= joggerFreqLoc[0] || f >= joggerFreqLoc[3])
 		return 0;
-	else if(f < 2.2)
-		return (f-1.9)*(2.2-1.9);
-	else if (f <= 2.7)
+	else if(f < joggerFreqLoc[1])
+		return (f-joggerFreqLoc[0])*(joggerFreqLoc[1]-joggerFreqLoc[0]);
+	else if (f <= joggerFreqLoc[2])
 		return 1;
 	else
-		return -(f-3.5)*(3.5-2.7);;
+		return -(f-joggerFreqLoc[3])*(joggerFreqLoc[3]-joggerFreqLoc[2]);;
 }
 
 int main(int argc, char** argv){
