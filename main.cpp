@@ -142,11 +142,11 @@ double joggerLoadFactor(double f){
 	if(f <= joggerFreqLoc[0] || f >= joggerFreqLoc[3])
 		return 0;
 	else if(f < joggerFreqLoc[1])
-		return (f-joggerFreqLoc[0])*(joggerFreqLoc[1]-joggerFreqLoc[0]);
+		return (f-joggerFreqLoc[0])/(joggerFreqLoc[1]-joggerFreqLoc[0]);
 	else if (f <= joggerFreqLoc[2])
 		return 1;
 	else
-		return -(f-joggerFreqLoc[3])*(joggerFreqLoc[3]-joggerFreqLoc[2]);;
+		return -(f-joggerFreqLoc[3])/(joggerFreqLoc[3]-joggerFreqLoc[2]);;
 }
 
 int main(int argc, char** argv){
