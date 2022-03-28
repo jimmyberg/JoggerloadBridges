@@ -198,8 +198,11 @@ int main(int argc, char** argv){
 
 	float m;
 	cin >> m;
-
-	cout << "Maximal acceleration [m/s^2]     = " << y_max_ratio*1250*joggerLoadFactor(f)/(2*m*z) << " per jogger.\n";
-
+	const float accelPerJogger = y_max_ratio * 1250 * joggerLoadFactor(f) / (2 * m * z);
+	cout << "Maximal acceleration [m/s^2]     = " << accelPerJogger << " per jogger.\n";
+	cout << "Number of joggers                = " << flush;
+	unsigned int numberOfJoggers;
+	cin >> numberOfJoggers;
+	cout << "Maximal acceleration [m/s^2]     = " << accelPerJogger * numberOfJoggers << " per jogger.\n";
 	return 0;
 }
